@@ -48,7 +48,7 @@ const int MAX_FILES = 500;
 /*-------------------> ??? <----------------------*/
 
 int Type = 0; //Determines type of Media to be focused on
-int Vol0 = 0; //Initialize only, shows inverted usage if Volume 0 functionallity
+int Vol0; //Initialize only, shows inverted usage if Volume 0 functionallity
 int DiffDirs = 5; //Initialize only, Counts the Amount of Chapters
 path OriginalPath = current_path(); //Gets The Current Path, which contains the Program
 path Testing = (OriginalPath /= "Example");
@@ -114,7 +114,7 @@ int main(){
         cout << "Other" << endl;
     }
 
-	getRenameType();
+	//getRenameType();
 	cyclepath(Testing);
 	//createdir();
 	return 0;
@@ -138,7 +138,7 @@ void cyclepath(path p){
 
 				sort(v.begin(), v.end());             // sort, since directory iteration is not ordered on some file systems
 
-				stringstream ss3; //BackUp String for Path of Files with PrefixZero !Cast to String!
+				//stringstream ss3; //BackUp String for Path of Files with PrefixZero !Cast to String!
 				int count = 0; //Counts Directorys
 
 				for (vec::iterator it (v.begin()); it != v.end(); ++it){ //Iteration cycles through sorted Directory
@@ -154,23 +154,50 @@ void cyclepath(path p){
 				}
 				cout << "The total amount of Directorys is: " << count << endl;
 				cout << "Detecting Naming Scheme..." << endl;
-				if (Vol0 == 0){ //Check for Naming Scheme to use same algorythm to check for DiffDirs
+				for (vec::iterator it (v.begin()); it != v.end(); ++it){
+					for (int i = 1; i < 16; ++i){
+						int one = 1;
+						stringstream ss2; //Creates a Stringstream for Counter Manipulation and conversion
+						ss2 << setfill('0') << setw(i) << one; //Adds the Counter to the Stringstream
+						string str = ss2.str(); //Converts Stringstream to native String
+						string Prefixint(" Volume " + str); //Converted String Equals Volume + Prefix Int
+						string subdir = (*it).filename().string();
+						if (subdir.find(Prefixint) != string::npos){
+							cout << isdigit(subdir.find(Prefixint)) << endl; //Optional 
+							cout << Prefixint << "!!!!!!!!!" << endl; //Optional 
+							//ss3 << Prefixint;
+							//cout << "SS3 equals to " << ss3.str() << endl; //Optional 
+							Vol0 = 1;
+							break;
+						}
+						else{
+							cout << (*it).filename().string() << endl;
+							cout << Prefixint << endl;
+							cout << "Breaking Madness!!" << endl; //Optional 
+							continue;
+						}
+					}
+					break;
+				}
+				if (Vol0 != 1){
 					for (vec::iterator it (v.begin()); it != v.end(); ++it){
 						for (int i = 1; i < 16; ++i){
-							stringstream ss2; //Creates a Stringstream for Counter Manipulation and conversion
-							ss2 << setfill('0') << setw(i) << Vol0; //Adds the Counter to the Stringstream
-							string str = ss2.str(); //Converts Stringstream to native String
+							int zero = 0;
+							stringstream ss3; //Creates a Stringstream for Counter Manipulation and conversion
+							ss3 << setfill('0') << setw(i) << zero; //Adds the Counter to the Stringstream
+							string str = ss3.str(); //Converts Stringstream to native String
 							string Prefixint(" Volume " + str); //Converted String Equals Volume + Prefix Int
 							string subdir = (*it).filename().string();
 							if (subdir.find(Prefixint) == string::npos){
-								ss2.str(string()); //Clears the Stringstream
-								ss2 << setfill('0') << setw(i-1) << Vol0; //Adds the Counter to the Stringstream
-								string str = ss2.str(); //Converts Stringstream to native String
+								ss3.str(string()); //Clears the Stringstream
+								ss3 << setfill('0') << setw(i-1) << zero; //Adds the Counter to the Stringstream
+								string str = ss3.str(); //Converts Stringstream to native String
 								string Prefixint(" Volume " + str); //Converted String Equals Volume + Prefix Int
 								cout << isdigit(subdir.find(Prefixint)) << endl; //Optional
 								cout << Prefixint << "!!!!!!!!!" << endl; //Optional
 								ss3 << Prefixint;
 								cout << "SS3 equals to " << ss3.str() << endl; //Optional 
+								Vol0 = 0;
 								break;
 							}
 							else{
@@ -182,32 +209,7 @@ void cyclepath(path p){
 						}
 						break;
 					}
-				}
-				else{
-					for (vec::iterator it (v.begin()); it != v.end(); ++it){
-						for (int i = 1; i < 16; ++i){
-							stringstream ss2; //Creates a Stringstream for Counter Manipulation and conversion
-							ss2 << setfill('0') << setw(i) << Vol0; //Adds the Counter to the Stringstream
-							string str = ss2.str(); //Converts Stringstream to native String
-							string Prefixint(" Volume " + str); //Converted String Equals Volume + Prefix Int
-							string subdir = (*it).filename().string();
-							if (subdir.find(Prefixint) != string::npos){
-								cout << isdigit(subdir.find(Prefixint)) << endl; //Optional 
-								cout << Prefixint << "!!!!!!!!!" << endl; //Optional 
-								ss3 << Prefixint;
-								cout << "SS3 equals to " << ss3.str() << endl; //Optional 
-								break;
-							}
-							else{
-								cout << (*it).filename().string() << endl;
-								cout << Prefixint << endl;
-								cout << "Breaking Madness!!" << endl; //Optional 
-								continue;
-							}
-						}
-						break;
-					}
-				}
+				}				
 				/*for (vec::iterator it (v.begin()); it != v.end(); ++it){
 
 					if (prev.empty() == true){ //Rethink a more efficient and intelligent Structure
