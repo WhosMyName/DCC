@@ -49,7 +49,7 @@ const int MAX_FILES = 500;
 
 int Type = 0; //Determines type of Media to be focused on
 int Vol0; //Initialize only, shows inverted usage if Volume 0 functionallity
-int DiffDirs = 5; //Initialize only, Counts the Amount of Chapters
+int DiffDirs; //Initialize only, Counts the Amount of Chapters
 path OriginalPath = current_path(); //Gets The Current Path, which contains the Program
 path Testing = (OriginalPath /= "Example");
 path ReName = OriginalPath.filename(); //Gets the Name of the Parent Folder, idk how but is does instead of parent_name(), but whatever ??? YOLO
@@ -152,6 +152,7 @@ void cyclepath(path p){
 						cout << (*it).filename() << " was the latest added Directory!" << endl << endl;
 					}
 				}
+				int fill = 0; 
 				cout << "The total amount of Directorys is: " << count << endl;
 				cout << "Detecting Naming Scheme..." << endl;
 				for (vec::iterator it (v.begin()); it != v.end(); ++it){
@@ -165,8 +166,7 @@ void cyclepath(path p){
 						if (subdir.find(Prefixint) != string::npos){
 							cout << isdigit(subdir.find(Prefixint)) << endl; //Optional 
 							cout << Prefixint << "!!!!!!!!!" << endl; //Optional 
-							//ss3 << Prefixint;
-							//cout << "SS3 equals to " << ss3.str() << endl; //Optional 
+							cout << "SS2 equals to " << ss2.str() << endl; //Optional 
 							Vol0 = 1;
 							break;
 						}
@@ -174,12 +174,16 @@ void cyclepath(path p){
 							cout << (*it).filename().string() << endl;
 							cout << Prefixint << endl;
 							cout << "Breaking Madness!!" << endl; //Optional 
+							cout << "Fill equals: " << fill << endl;
+							fill++;
 							continue;
 						}
 					}
 					break;
 				}
+				cout << "Fillljnk equals: " << fill << endl;
 				if (Vol0 != 1){
+					fill = 0;
 					for (vec::iterator it (v.begin()); it != v.end(); ++it){
 						for (int i = 1; i < 16; ++i){
 							int zero = 0;
@@ -204,11 +208,48 @@ void cyclepath(path p){
 								cout << (*it).filename().string() << endl;
 								cout << Prefixint << endl;
 								cout << "Breaking Madness!!" << endl; //Optional
+								cout << "Fill equals: " << fill << endl;
+								fill++;
 								continue;
 							}
 						}
 						break;
 					}
+				}
+				if (fill > 0){
+					fill--;
+				}
+
+				cout << "<------------------------------------------------------->" << endl << endl;
+				cout << Vol0 << endl;
+				cout << fill << endl;
+				cout << "<------------------------------------------------------->" << endl << endl;
+
+				for (vec::iterator it (v.begin()); it != v.end(); ++it){
+					stringstream ss4; //Creates a Stringstream for Counter Manipulation and conversion
+					ss4 << setfill('0') << setw(fill) << Vol0; //Adds the Counter to the Stringstream
+					string str = ss4.str(); //Converts Stringstream to native String
+					string Prefixint(" Volume " + str); //Converted String Equals Volume + Prefix Int
+					string subdir = (*it).filename().string();
+					if (subdir.find(Prefixint) != string::npos){
+						ss4.str(string()); //Clears the Stringstream
+						ss4 << setfill('0') << setw(fill) << Vol0; //Adds the Counter to the Stringstream
+						string str = ss4.str(); //Converts Stringstream to native String
+						string Prefixint(" Volume " + str); //Converted String Equals Volume + Prefix Int
+						cout << isdigit(subdir.find(Prefixint)) << endl; //Optional
+						cout << Prefixint << "!!!!!!!!!" << endl; //Optional
+						ss4 << Prefixint;
+						cout << "SS4 equals to " << ss4.str() << endl; //Optional
+						DiffDirs++;
+						Vol0++;
+						cout << DiffDirs << endl;
+					}
+					/*else{
+						cout << (*it).filename().string() << endl;
+						cout << Prefixint << endl;
+						cout << "Breaking Madness!!" << endl; //Optional
+						continue;
+					}*/
 				}				
 				/*for (vec::iterator it (v.begin()); it != v.end(); ++it){
 
