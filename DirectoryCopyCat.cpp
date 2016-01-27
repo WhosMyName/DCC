@@ -4,7 +4,7 @@ DirectoryCopyCat
 
 -1. Get Operating System; ------------------------------------------------------------y
 0.Ask for Volume/Season Renaming; ----------------------------------------------------y
-1.Get Directory; ---------------------------------------------------------------------WIP till the End
+1.Get Directory; ---------------------------------------------------------------------y Insert into Dir
 2.Enable Volume 0 Support; -----------------------------------------------------------y
 3.Check Child Directorys; ------------------------------------------------------------y
 4.Count Child Directorys;-------------------------------------------------------------?
@@ -41,12 +41,6 @@ DirectoryCopyCat
 using namespace std;
 using namespace boost::filesystem;
 
-/*-------------------> ??? <----------------------*/
-const int MAX_VOLUMES = 100;
-const int MAX_DIRECTORYS = 100;
-const int MAX_FILES = 500;
-/*-------------------> ??? <----------------------*/
-
 int Type = 0; //Determines type of Media to be focused on
 int Vol0; //Initialize only, shows inverted usage if Volume 0 functionallity
 int DiffDirs; //Initialize only, Counts the Amount of Chapters
@@ -60,7 +54,6 @@ typedef vector<path> vec; // store paths, so we can store and sort them later
 vec v; //Vector for Source-Directory
 vec u; //Vector for Files
 vec w; //Vector for Destination-Directory
-//string PathTraversal[MAX_VOLUMES][MAX_DIRECTORYS][MAX_FILES]; //Optional
 
 void getRenameType(){
 	string Media;
@@ -123,12 +116,18 @@ void createdir(){
 		string Conv("Volume " + str); //Converted String Equals renamed Folders
 		path Dir;
 		Dir = Conv; // Cast String to Path
+		vec::iterator it2 (w.begin());
 		cout << "Dir equals: " << Dir << endl << endl;
 		cout << "Conv equals: " << Conv << endl << endl;
 		if (create_directory(Dir)) { //Checks if creation of Directories Succeeds
 			cout << "Success creating Directory called " << Dir << endl; //Outputs Success Message
 			i++; //Ganz fcking Wichtig!
 			Vol0++;
+			w.insert(it2,Dir);//Inserts a Directory Path into the Vector W as single Node
+			it2++;
+			if (remove(Dir)){//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+				cout << "Delete!" << endl;
+			}//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 		}
 		else{
 			cout << "Breaking!" << endl;
@@ -136,15 +135,11 @@ void createdir(){
 		}
 	}
 	cout << "Past IF" << endl;
+	for (vec::iterator it2 (w.begin()); it2 != w.end(); ++it2){ //Iteration cycles through Vector W
+		cout << (*it2).filename() << " was the latest added Directory!" << endl << endl;
+	}
 }
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!HAZARD!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!//
 
-void cycletest();
-
-void createtest();
-
-
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!//
 void differentiate(){
 	if (Fill > 0 && Vol0 == 1){
 		Fill++;
@@ -187,21 +182,15 @@ void differentiate(){
 	cout << "Vol0 equals: " << Vol0 << endl << endl;
 	cout << "Fill equals: " << Fill << endl << endl;
 	cout << "<------------------------------------------------------->" << endl << endl;
-
-	//OOOOOOOOOOOOOOOOOOOOOOOExperimentalOOOOOOOOOOOOOOOOOOOOO//
-
-	if (Clear == 1){ //Clears the Vector vec
-		for (vec::iterator it (v.begin()); it != v.end(); ++it){ //Iteration cycles through sorted Directory
-			it = v.erase(it);
-			it--;
-		}
-	}
-
-	//000000000000000000000000000000000000000000000000000000//
-
 }
 
 void cyclepath(path p);
+
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!HAZARD!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!//
+
+void cycletest();
+
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!//
 
 //##################################################################################################################################################################//
 int main(){
@@ -217,12 +206,12 @@ int main(){
     }
     cycletest();
 
-    //Oppai!!!!
+    /////////////////////Oppai!!!!
 	//getRenameType();
 	//cyclepath(Testing);
 	//differentiate();
 	//createdir();
-	//Oppai!!!!
+	/////////////////////Oppai!!!!
 	return 0;
 }
 //##################################################################################################################################################################//
@@ -238,14 +227,13 @@ void cyclepath(path p){
 			else if (is_directory(p)){      // is p a directory?
 				cout << p << " is a directory containing:" << endl;
 				
-				copy(directory_iterator(p), directory_iterator(), back_inserter(v));//I think it iterates through the Directory and saves all "Nodes" in the Vector
+				copy(directory_iterator(p), directory_iterator(), back_inserter(v)); //std::copy (inputfirst, inputlast, output)
 
-				sort(v.begin(), v.end()); // sort, since directory iteration is not ordered on some file systems
+				sort(v.begin(), v.end()); //std::sort, since directory iteration is not ordered on some file systems
 
-				//stringstream ss3; //BackUp String for Path of Files with PrefixZero !Cast to String!
 				int count = 0; //Counts Directorys
 
-				for (vec::iterator it (v.begin()); it != v.end(); ++it){ //Iteration cycles through sorted Directory
+				for (vec::iterator it (v.begin()); it != v.end(); ++it){ //Iteration cycles through Vector V
 					if (!is_directory(*it)){
 						it = v.erase(it);
 						it--;
@@ -340,59 +328,6 @@ void cyclepath(path p){
 
 ///////////////////////////////////////HAZARD/////////////////////////////////////////
 
-void createtest(){
-	cout << "DiffDirs equals: " << DiffDirs << endl << endl;
-	if(DiffDirs < 10){
-		Fill = 0;
-		cout << "Fill equals: " << Fill << endl << endl;
-	}
-	else if(DiffDirs < 100 && DiffDirs >= 10){
-		Fill = 1;
-		cout << "Fill equals: " << Fill << endl << endl;
-	}
-	else if(DiffDirs < 1000 && DiffDirs >= 100){
-		Fill = 2;
-		cout << "Fill equals: " << Fill << endl << endl;
-	}
-	else{
-		Fill = 10; 
-		cout << "Fill equals: " << Fill << endl << endl;
-	}
-	cout << "Pre-if" << endl;
-	cout << "Vol0 equals: " << Vol0 << endl << endl;
-	int i = Vol0;
-	if(i == 1){
-		i = 0;
-	}
-	while (i < DiffDirs){
-		cout << "in if" << endl;
-		stringstream ss; //Creates a Stringstream for Counter Manipulation and conversion
-		ss << setfill('0') << setw(Fill) << Vol0; //Adds the Counter to the Stringstream
-		string str = ss.str(); //Converts Stringstream to native String
-		string Parent = ReName.string(); //Converts Path to String
-		string Conv("Volume " + str); //Converted String Equals renamed Folders
-		path Dir;
-		Dir = Conv; // Cast String to Path
-		cout << "Dir equals: " << Dir << endl << endl;
-		cout << "Conv equals: " << Conv << endl << endl;
-		if (create_directory(Dir)) { //Checks if creation of Directories Succeeds
-			cout << "Success creating Directory called " << Dir << endl; //Outputs Success Message
-			if (remove(Dir)){
-				cout << "Delete!" << endl;
-			}
-			i++; //Ganz fcking Wichtig!
-			Vol0++;
-		}
-		else{
-			cout << "Breaking!" << endl;
-			break;
-		}
-	}
-	cout << "Past IF" << endl;
-}
-
-//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
-
 void cycletest(){
 	//Gets The Current Path, which contains the Program
 	path T1 = current_path();
@@ -413,27 +348,34 @@ void cycletest(){
 		Clear = 1;
 		cyclepath(Testing[i]);
 		differentiate();
-		createtest();
+		createdir();
 		cout << "<!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!>" << endl << endl;
 		cout << "Done with Test Number: " << i << endl << endl;
 		cout << "<#######################################################>" << endl << endl;
 		Vol0 = 0;
 		Fill = 0;
 		DiffDirs = 0;
-		//Prefixint = 0;	
+
+		//OOOOOOOOOOOOOOOOOOOOOOOExperimentalOOOOOOOOOOOOOOOOOOOOO//
+
+		if (Clear == 1){ //Clears the Vector vec
+			for (vec::iterator it (v.begin()); it != v.end(); ++it){ //Iteration cycles through sorted Directory
+				it = v.erase(it);
+				it--;
+			}
+		}
+
+		//000000000000000000000000000000000000000000000000000000//
+
+		//OOOOOOOOOOOOOOOOOOOOOOOExperimentalOOOOOOOOOOOOOOOOOOOOO//
+
+		if (Clear == 1){ //Clears the Vector vec
+			for (vec::iterator it2 (w.begin()); it2 != w.end(); ++it2){ //Iteration cycles through sorted Directory
+				it2 = w.erase(it2);
+				it2--;
+			}
+		}
+
+		//000000000000000000000000000000000000000000000000000000//	
 	}
 }
-
-//////////////////////////////////////////////////////////////////////////////////////
-
-/*
-if (temp == NULL){
-	temp = *it;
-	cout << *it << endl;
-}
-else if(temp != NULL && temp.string().compare((*it).string()) != 0){
-	temp = *it;
-	cout << *it << endl;
-	DiffDirs++;
-}
-*/
