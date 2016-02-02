@@ -47,10 +47,10 @@ int DiffDirs; //Initialize only, Counts the Amount of Chapters
 int Fill;
 int Clear;
 path OriginalPath = current_path(); //Gets The Current Path, which contains the Program
-path ReName = OriginalPath; //Gets the Name of the Parent Folder, idk how but is does instead of parent_name(), but whatever ??? YOLO
 
 typedef vector<path> vec; // store paths, so we can store and sort them later
 vec v; //Vector for Source-Directory
+vec x; //Vector for Source-Directory without Zeros for Comparison
 vec u; //Vector for Files
 vec w; //Vector for Destination-Directory
 
@@ -107,7 +107,7 @@ void createdir(){
 		i = 0;
 	}
 	while (i < DiffDirs){
-		cout << "in if" << endl;
+		cout << "in if" << endl;//Optional
 		stringstream ss; //Creates a Stringstream for Counter Manipulation and conversion
 		ss << setfill('0') << setw(Fill) << Vol0; //Adds the Counter to the Stringstream
 		string str = ss.str(); //Converts Stringstream to native String
@@ -123,14 +123,10 @@ void createdir(){
 			cout << "Success creating Directory called " << Dir << endl; //Outputs Success Message
 			i++; //Ganz fcking Wichtig!
 			Vol0++;
-			Dir2 /= Dir;
-			cout << Dir2 << endl;
+			Dir2 /= Dir; //Full Path in Vec W
+			cout << Dir2 << endl; //Optional
 			w.insert(it2,Dir2);//Inserts a Directory Path into the Vector W as single Node
 			it2++;
-			//Dir2 = clear();
-			/*if (remove(Dir)){//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-				cout << "Delete!" << endl;
-			}//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$*/
 		}
 		else{
 			cout << "Breaking!" << endl;
@@ -145,18 +141,23 @@ void createdir(){
 }
 
 void showvecs(){
-	cout << "<------------------------------------------------------->" << endl << endl;
+	cout << "<-----------------------V-------------------------------->" << endl << endl;
 	for (vec::iterator it (v.begin()); it != v.end(); ++it){ //Iteration cycles through Vector V
 		cout << (*it).filename() << " was the latest added Directory!" << endl << endl;
 	}
-	cout << "<------------------------------------------------------->" << endl << endl;
+	cout << "<------------------------W------------------------------->" << endl << endl;
 	for (vec::iterator it2 (w.begin()); it2 != w.end(); ++it2){ //Iteration cycles through Vector W
 		cout << (*it2).filename() << " was the latest added Directory!" << endl << endl;
+	}
+	cout << "<------------------------X------------------------------->" << endl << endl;
+	for (vec::iterator it4 (x.begin()); it4 != x.end(); ++it4){ //Iteration cycles through Vector W
+		cout << (*it4) << " was the latest added Directory!" << endl << endl;
 	}
 	cout << "<------------------------------------------------------->" << endl << endl;
 }
 
 void differentiate(){
+
 	if (Fill > 0 && Vol0 == 1){
 		Fill++;
 	}
@@ -164,6 +165,7 @@ void differentiate(){
 	cout << "Fill equals: " << Fill << endl << endl;
 	cout << "<------------------------------------------------------->" << endl << endl;
 	int i = Vol0;
+
 	for (vec::iterator it (v.begin()); it != v.end(); ++it){
 		stringstream ss4; //Creates a Stringstream for Counter Manipulation and conversion
 		ss4.str(string()); //Clears the Stringstream
@@ -175,29 +177,50 @@ void differentiate(){
 		cout << "subdir: " << subdir << endl;
 		if (subdir.find(Prefixint) != string::npos){
 			ss4.str(string()); //Clears the Stringstream
-			ss4 << setfill('0') << setw(Fill) << Vol0; //Adds the Counter to the Stringstream
+			ss4 << setfill('0') << setw(Fill) << i; //Adds the Counter to the Stringstream
 			string str = ss4.str(); //Converts Stringstream to native String
 			string Prefixint("Volume " + str); //Converted String Equals Volume + Prefix Int
 			cout << isdigit(subdir.find(Prefixint)) << endl; //Optional
 			cout << Prefixint << "!!!!!!!!!" << endl; //Optional
-			ss4 << Prefixint;
 			cout << "SS4 equals to " << ss4.str() << endl; //Optional
 			DiffDirs++;
 			i++;
 			cout << DiffDirs << endl;
 		}
-		/*else{
-			cout << (*it).filename().string() << endl;
-			cout << Prefixint << endl;
-			cout << "Breaking Madness!!" << endl; //Optional
-			continue;
-		}*/
 	}
-	cout << "<------------------------------------------------------->" << endl << endl;
-	cout << "DiffDirs equals: " << DiffDirs << endl << endl;
-	cout << "Vol0 equals: " << Vol0 << endl << endl;
-	cout << "Fill equals: " << Fill << endl << endl;
-	cout << "<------------------------------------------------------->" << endl << endl;
+	cout << "<------------------------------------------------------->" << endl << endl;//Optional
+	cout << "DiffDirs equals: " << DiffDirs << endl << endl;//Optional
+	cout << "Vol0 equals: " << Vol0 << endl << endl;//Optional
+	cout << "Fill equals: " << Fill << endl << endl;//Optional
+	cout << "<------------------------------------------------------->" << endl << endl;//Optional
+}
+
+void fillx(){
+	
+
+	int i = Vol0;
+	int j = i;
+	if(i == 1){
+		i = 0;
+	}
+
+	cout << "Startin FillX" << endl;
+
+	while (i < DiffDirs){
+		vec::iterator it4 (x.begin());
+		stringstream ss5;
+		ss5.str(string()); //Clears the Stringstream
+		ss5 << setfill('0') << setw(Fill) << j; //Adds the Counter to the Stringstream
+		string str = ss5.str(); //Converts Stringstream to native String
+		string Prefixint("Volume " + str); //Converted String Equals Volume + Prefix Int
+		i++;
+		j++;
+		x.insert(it4,Prefixint);
+		it4++;
+		cout << Prefixint << endl;
+	}
+
+	sort(x.begin(), x.end()); //std::sort, since directory iteration is not ordered on some file systems
 }
 
 void copyandcheck(){
@@ -205,26 +228,102 @@ void copyandcheck(){
 	vec::iterator it (v.begin());
 	vec::iterator it2 (w.begin());
 	vec::iterator it3 (u.begin());
+	vec::iterator it4 (x.begin());
 
 	cout << "Startin' C'n' C" << endl;
 
-	for (vec::iterator it (v.begin()); it != v.end(); ++it){
+	if(Vol0 != 1){
 
-		string Source = (*it).filename().string();
+		cout << "Vol0 != 1" << endl << endl;//Optional
+
+		for (vec::iterator it (v.begin()); it != v.end(); ++it){
+
+			string Source = (*it4).string();
+			string Destination = (*it2).filename().string();
+			string VecV = (*it).filename().string();
+			path SourcePath = (*it);
+			path DestinationPath = (*it2);
+
+
+
+			cout << Source << endl;//Optional
+			cout << Destination << endl;//Optional
+
+			cout << "Inside For" << endl;//Optional
+
+			cout << "-----------------------------------------" << endl;//Optional
+
+			if (VecV.find(Source) == string::npos){
+				cout << "Unequal, jumping to next Directory!" << endl;
+				it2++;
+				it4++;
+				it--;
+			}
+			else{
+				
+				cout << "Started Copy Process!" << endl;
+				copy(directory_iterator(SourcePath), directory_iterator(), back_inserter(u)); //std::copy (inputfirst, inputlast, output)
+
+				sort(u.begin(), u.end()); //std::sort, since directory iteration is not ordered on some file systems
+
+				cout << Source << endl;//Optional
+				cout << Destination << endl;//Optional
+				cout << SourcePath << endl;//Optional
+				cout << DestinationPath << endl;//Optional
+
+				for (vec::iterator it3 (u.begin()); it3 != u.end(); ++it3){ //Iteration cycles through Vector V
+					if (is_directory(*it3)){
+						it3 = u.erase(it3);
+						it3--;
+					}
+				}
+
+				for (vec::iterator it3 (u.begin()); it3 != u.end(); ++it3){ //Iteration cycles through Vector W
+					cout << (*it3).filename() << " was the latest added Directory!" << endl << endl;
+					path Sourcefile = (*it3);
+					path Destinationfile = DestinationPath/(*it3).filename();
+					cout << Destinationfile << endl;//Optional
+					copy_file(Sourcefile, Destinationfile);
+					//Check if Copy was successful else decrement and break
+					//it3--;
+					//break;
+				}
+
+				cout << "Finished Copy Process!" << endl;
+					
+				for (vec::iterator it3 (u.begin()); it3 != u.end(); ++it3){ //Iteration cycles through sorted Directory and Clears it
+					cout << "Clear Vec U" << endl;
+					it3 = u.erase(it3);
+					it3--;
+				}
+			}
+		}
+	}
+	if(Vol0 == 1){
+
+		cout << "Vol0 == 1" << endl << endl;//Optional
+
+		for (vec::iterator it (v.begin()); it != v.end(); ++it){
+
+		string Source = (*it4).string();
 		string Destination = (*it2).filename().string();
+		string VecV = (*it).filename().string();
 		path SourcePath = (*it);
 		path DestinationPath = (*it2);
 
-		cout << Source << endl;
-		cout << Destination << endl;
 
-		cout << "Inside For" << endl;
 
-		cout << "-----------------------------------------" << endl;
+		cout << Source << endl;//Optional
+		cout << Destination << endl;//Optional
 
-		if (Source.find(Destination) == string::npos){
+		cout << "Inside For" << endl;//Optional
+
+		cout << "-----------------------------------------" << endl;//Optional
+
+		if (VecV.find(Source) == string::npos){
 			cout << "Unequal, jumping to next Directory!" << endl;
 			it2++;
+			it4++;
 			it--;
 		}
 		else{
@@ -234,10 +333,10 @@ void copyandcheck(){
 
 			sort(u.begin(), u.end()); //std::sort, since directory iteration is not ordered on some file systems
 
-			cout << Source << endl;
-			cout << Destination << endl;
-			cout << SourcePath << endl;
-			cout << DestinationPath << endl;
+			cout << Source << endl;//Optional
+			cout << Destination << endl;//Optional
+			cout << SourcePath << endl;//Optional
+			cout << DestinationPath << endl;//Optional
 
 			for (vec::iterator it3 (u.begin()); it3 != u.end(); ++it3){ //Iteration cycles through Vector V
 				if (is_directory(*it3)){
@@ -246,15 +345,11 @@ void copyandcheck(){
 				}
 			}
 
-			/************************************************************************************/
-			//Try to Create full Paths for the Destination !!!!!!!!!!!!!!!!!!!!!!!!!
-			/************************************************************************************/
-
 			for (vec::iterator it3 (u.begin()); it3 != u.end(); ++it3){ //Iteration cycles through Vector W
 				cout << (*it3).filename() << " was the latest added Directory!" << endl << endl;
 				path Sourcefile = (*it3);
 				path Destinationfile = DestinationPath/(*it3).filename();
-				cout << Destinationfile << endl;
+				cout << Destinationfile << endl;//Optional
 				copy_file(Sourcefile, Destinationfile);
 				//Check if Copy was successful else decrement and break
 				//it3--;
@@ -269,6 +364,7 @@ void copyandcheck(){
 				it3--;
 			}
 		}
+	}
 	}
 }
 
@@ -353,14 +449,14 @@ void cyclepath(path p){
 							cout << (*it).filename().string() << endl;
 							cout << Prefixint << endl;
 							cout << "Breaking Madness!!" << endl; //Optional 
-							cout << "Fill equals: " << Fill << endl;
+							cout << "Fill equals: " << Fill << endl;//Optional
 							Fill++;
 							continue;
 						}
 					}
 					break;
 				}
-				cout << "Fillljnk equals: " << Fill << endl;
+				cout << "Fillljnk equals: " << Fill << endl;//Optional
 				if (Vol0 != 1){
 					Fill = 0;
 					for (vec::iterator it (v.begin()); it != v.end(); ++it){
@@ -369,13 +465,13 @@ void cyclepath(path p){
 							stringstream ss3; //Creates a Stringstream for Counter Manipulation and conversion
 							ss3 << setfill('0') << setw(i) << zero; //Adds the Counter to the Stringstream
 							string str = ss3.str(); //Converts Stringstream to native String
-							string Prefixint(" Volume " + str); //Converted String Equals Volume + Prefix Int
+							string Prefixint("Volume " + str); //Converted String Equals Volume + Prefix Int
 							string subdir = (*it).filename().string();
 							if (subdir.find(Prefixint) == string::npos){
 								ss3.str(string()); //Clears the Stringstream
 								ss3 << setfill('0') << setw(i-1) << zero; //Adds the Counter to the Stringstream
 								string str = ss3.str(); //Converts Stringstream to native String
-								string Prefixint(" Volume " + str); //Converted String Equals Volume + Prefix Int
+								string Prefixint("Volume " + str); //Converted String Equals Volume + Prefix Int
 								cout << isdigit(subdir.find(Prefixint)) << endl; //Optional
 								cout << Prefixint << "!!!!!!!!!" << endl; //Optional
 								ss3 << Prefixint;
@@ -387,7 +483,7 @@ void cyclepath(path p){
 								cout << (*it).filename().string() << endl;
 								cout << Prefixint << endl;
 								cout << "Breaking Madness!!" << endl; //Optional
-								cout << "Fill equals: " << Fill << endl;
+								cout << "Fill equals: " << Fill << endl;//Optional
 								Fill++;
 								continue;
 							}
@@ -395,11 +491,11 @@ void cyclepath(path p){
 						break;
 					}
 				}
-				cout << "<------------------------------------------------------->" << endl << endl;
-				cout << "DiffDirs equals: " << DiffDirs << endl << endl;
-				cout << "Vol0 equals: " << Vol0 << endl << endl;
-				cout << "Fill equals: " << Fill << endl << endl;
-				cout << "<------------------------------------------------------->" << endl << endl;		
+				cout << "<------------------------------------------------------->" << endl << endl;//Optional
+				cout << "DiffDirs equals: " << DiffDirs << endl << endl;//Optional
+				cout << "Vol0 equals: " << Vol0 << endl << endl;//Optional
+				cout << "Fill equals: " << Fill << endl << endl;//Optional
+				cout << "<------------------------------------------------------->" << endl << endl;//Optional
 			}
 			else{
 				cout << p << " exists, but is neither a regular file nor a directory\n";
@@ -438,9 +534,10 @@ void cycletest(){
 
 	if (Multi == 0){
 		for (int i = 0; i < 1; ++i){
-			Clear = 0;
-			cyclepath(Testing[i]);
+			Clear = 1;
+			cyclepath(Testing[3]);
 			differentiate();
+			fillx();
 			createdir();
 			showvecs();
 			copyandcheck();
@@ -458,17 +555,22 @@ void cycletest(){
 				}
 			}
 
-			if (Clear == 1){ //Clears the Vector w
-				for (vec::iterator it (w.begin()); it != w.end(); ++it){ //Iteration cycles through sorted Directory
-					it = w.erase(it);
+			if (Clear == 1){ //Clears the Vector v
+				for (vec::iterator it (x.begin()); it != x.end(); ++it){ //Iteration cycles through sorted Directory
+					it = x.erase(it);
 					it--;
 				}
 			}
 
-			cout << "Check for empty Vector" << endl;
+			cin.ignore().get();
 
-			for (vec::iterator it2 (w.begin()); it2 != w.end(); ++it2){ //Iteration cycles through Vector W
-				cout << (*it2).filename() << " was the latest added Directory!" << endl << endl;
+			if (Clear == 1){ //Clears the Vector w
+				for (vec::iterator it (w.begin()); it != w.end(); ++it){ //Iteration cycles through sorted Directory
+					path delfolder = (*it);
+					remove_all(delfolder);
+					it = w.erase(it);
+					it--;
+				}
 			}	
 		}
 	}
@@ -477,7 +579,10 @@ void cycletest(){
 			Clear = 1;
 			cyclepath(Testing[i]);
 			differentiate();
+			fillx();
 			createdir();
+			showvecs();
+			copyandcheck();
 			cout << "<!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!>" << endl << endl;
 			cout << "Done with Test Number: " << i << endl << endl;
 			cout << "<#######################################################>" << endl << endl;
@@ -492,12 +597,38 @@ void cycletest(){
 				}
 			}
 
-			if (Clear == 1){ //Clears the Vector w
-				for (vec::iterator it (w.begin()); it != w.end(); ++it){ //Iteration cycles through sorted Directory
-					it = w.erase(it);
+			if (Clear == 1){ //Clears the Vector v
+				for (vec::iterator it (x.begin()); it != x.end(); ++it){ //Iteration cycles through sorted Directory
+					it = x.erase(it);
 					it--;
 				}
 			}
+
+			cin.ignore().get();
+
+			if (Clear == 1){ //Clears the Vector w
+				for (vec::iterator it2 (w.begin()); it2 != w.end(); ++it2){ //Iteration cycles through sorted Directory
+					path delfolder = (*it2);
+					remove_all(delfolder);
+					it2 = w.erase(it2);
+					it2--;
+				}
+			}
+
+			if (Clear == 1){ //Clears the Vector u
+				for (vec::iterator it3 (u.begin()); it3 != u.end(); ++it3){ //Iteration cycles through sorted Directory
+					it3 = u.erase(it3);
+					it3--;
+				}
+			}
+
+			cin.ignore().get();	
 		}
 	}
 }
+
+///////////////////////////////////////////////////////////
+//
+//Get to ignore a certain amount of 0 in paths!!!!		
+//
+///////////////////////////////////////////////////////////
