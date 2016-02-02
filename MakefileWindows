@@ -1,4 +1,4 @@
-#-----------------Just rename to Makefile and make it------------#
+#-----------------Just remove Windows so it's called Makefile and make it------------#
 
 
 #OBJS specifies which files to compile as part of the project 
