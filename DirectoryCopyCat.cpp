@@ -388,14 +388,17 @@ int main(){
     else{
         cout << "Other" << endl;
     }
-    cycletest();
+    //cycletest();
 
-    /////////////////////Oppai!!!!
+
 	//getRenameType();
-	//cyclepath(Testing);
-	//differentiate();
-	//createdir();
-	/////////////////////Oppai!!!!
+	cyclepath(OriginalPath);
+	differentiate();
+	fillx();
+	createdir();
+	showvecs();
+	copyandcheck();
+
 	return 0;
 }
 //##################################################################################################################################################################//

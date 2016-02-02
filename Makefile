@@ -8,7 +8,7 @@ COMPILER_FLAGS = -w
 #LINKER_FLAGS specifies the libraries we're linking against 
 LINKER_FLAGS = -lboost_system -lboost_regex -lboost_filesystem -lpthread
 #OBJ_NAME specifies the name of our exectuable 
-OBJ_NAME = dcc.exe
+OBJ_NAME = dcc
 #This is the target that compiles our executable 
 all: $(OBJS) 
 	$(CC) $(COMPILER_FLAGS) $(LINKER_FLAGS) $(OBJS) -o $(OBJ_NAME) 
