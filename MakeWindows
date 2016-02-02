@@ -1,3 +1,6 @@
+#-----------------Just rename to Makefile and make it------------#
+
+
 #OBJS specifies which files to compile as part of the project 
 OBJS = DirectoryCopyCat.cpp 
 #CC specifies which compiler we're using 
