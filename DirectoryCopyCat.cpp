@@ -85,15 +85,15 @@ void getRenameType(){
 void createdir(){
 	cout << "DiffDirs equals: " << DiffDirs << endl << endl;
 	if(DiffDirs < 10){
-		Fill = 0;
-		cout << "Fill equals: " << Fill << endl << endl;
-	}
-	else if(DiffDirs < 100 && DiffDirs >= 10){
 		Fill = 1;
 		cout << "Fill equals: " << Fill << endl << endl;
 	}
-	else if(DiffDirs < 1000 && DiffDirs >= 100){
+	else if(DiffDirs >= 10 && DiffDirs < 100){
 		Fill = 2;
+		cout << "Fill equals: " << Fill << endl << endl;
+	}
+	else if(DiffDirs >= 100 && DiffDirs < 1000){
+		Fill = 3;
 		cout << "Fill equals: " << Fill << endl << endl;
 	}
 	else{
@@ -102,6 +102,7 @@ void createdir(){
 	}
 	cout << "Pre-if" << endl;
 	cout << "Vol0 equals: " << Vol0 << endl << endl;
+	cout << "Fill equals: " << Fill << endl << endl;
 	int i = Vol0;
 	if(i == 1){
 		i = 0;
