@@ -1,5 +1,5 @@
 #OBJS specifies which files to compile as part of the project 
-OBJS = MC2V.cpp 
+OBJS = mc2v.cpp 
 #CC specifies which compiler we're using 
 CC = g++ 
 #COMPILER_FLAGS specifies the additional compilation options we're using 
