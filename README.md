@@ -1,5 +1,5 @@
 # MangaChapter2Volume - MC2V
-#####This is a small Application to automagically convert Manga Chapters into appropriate Volumes for further processing!
+#####This is a small Application to automagically moves/copys Manga Chapters into appropriate Volumes for further processing!
 
 ######DISCLAIMER:
 I do not take responsibillity for any Data Loss!
