@@ -4,7 +4,7 @@ OBJS = mc2v.cpp
 CC = g++ 
 #COMPILER_FLAGS specifies the additional compilation options we're using 
 # -w suppresses all warnings 
-COMPILER_FLAGS = -w 
+COMPILER_FLAGS = -w -Wall -Wextra 
 #LINKER_FLAGS specifies the libraries we're linking against 
 LINKER_FLAGS = -lboost_system -lboost_regex -lboost_filesystem -lpthread
 #OBJ_NAME specifies the name of our exectuable 

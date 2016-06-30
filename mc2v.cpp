@@ -1,30 +1,3 @@
-/*
-
-DirectoryCopyCat
-
--1. Get Operating System; ------------------------------------------------------------y
-0.Ask for Volume/Season Renaming; ----------------------------------------------------y
-1.Get Directory; ---------------------------------------------------------------------y Insert into Dir
-2.Enable Volume 0 Support; -----------------------------------------------------------y
-3.Check Child Directorys; ------------------------------------------------------------y
-4.Count Child Directorys;-------------------------------------------------------------?
-5.Compare Directorys via StringCompare; ----------------------------------------------?
-6.Differentiate Directorys via Names and save Names (incremented 2D-Array 0,x);-------y
-7.Count Amount of non-equal (neq) Directory changes (incremented 2D-Array x,0);-------y
-8.Get Parent Folder Name; ------------------------------------------------------------y
-9.Create Volumes/Seasons Folders based on 6 and 7; -----------------------------------y
-10.Access Folders;--------------------------------------------------------------------y
-11.Copy Files to Created Directory;---------------------------------------------------y
-12.Increment Volumes/Seasons Folder based on 7; --------------------------------------y
-13.Switch to next Folder; ------------------------------------------------------------y
-14.Cycle through 2D-Array; -----------------------------------------------------------y
-15.Compare Copyed Files with old Files; ----------------------------------------------WIP - ???
-16.Delete old Files; -----------------------------------------------------------------WIP - Optional?
-17.Remove old Directorys; ------------------------------------------------------------WIP - Optional
-18.Open Parent Directory in File Explorer; -------------------------------------------WIP - Optional since it's executed inParent Directory
-
-*/
-
 #include <stdio.h> 
 #include <stdlib.h>
 #include <string>
@@ -38,7 +11,6 @@ DirectoryCopyCat
 #include <boost/filesystem/fstream.hpp>
 #include <boost/predef.h>
 
-int Type = 0; //Determines type of Media to be focused on
 int Vol0; //Initialize only, shows inverted usage if Volume 0 functionallity
 int DiffDirs; //Initialize only, Counts the Amount of Chapters
 int Fill; //Fills with corresponding 0 to match the Source
@@ -50,36 +22,6 @@ vec v; //Vector for Source-Directory
 vec w; //Vector for Destination-Directory
 vec u; //Vector for Files
 vec x; //Vector for Source-Directory without Zeros for Comparison
-
-/* Old Function for getting Volume 0 and Media-Type, maybe usefull for later Projects
-void getRenameType(){
-	std::string Media;
-	std::cout << "Would you like to Rename Series or Books?" << std::endl; //Output Self-Explainatory
-	std::cout << "Please answer with either \"Series\" or \"Books\" without the Quotes!" << std::endl; //Output Self-Explainatory
-	getline (cin, Media); //Save String extraction
-	if (Media.compare("Series") == 0){ //Compares Input with String
-		int Type = 1;
-		return;
-	}
-	else if (Media.compare("Books") == 0){ //Compares Input with String
-		std::string VOL;
-		std::cout << "Should the Usage of the Volume 0 be enabled?" << std::endl; //Output Self-Explainatory
-		getline(cin, VOL); //Save String extraction
-		if (VOL.compare("Yes") == 0){ //Compares Input with String inverted for compatibillity see cyclepath
-			Vol0 = 0;
-		}
-		if (VOL.compare("No") == 0){ //Compares Input with String
-			Vol0 = 1;
-		}
-		int Type = 2;
-		return;
-	}
-	else { //If no Input equals to above Cases then Exit
-		std::cout << "Wrong Input!" << std::endl; //Output Self-Explainatory
-		exit(EXIT_FAILURE); //Force Exit
-	}
-}
-*/
 
 void showvecs(){ //Optional
 	std::cout << "<-----------------------V-------------------------------->" << std::endl << std::endl;
