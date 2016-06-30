@@ -487,11 +487,11 @@ void cyclepath(boost::filesystem::path p){
 				std::cout << "<------------------------------------------------------->" << std::endl << std::endl; //Optional
 			}
 			else{
-				std::cout << p << " exists, but is neither a regular file nor a directory\n";
+				std::cout << p << " exists, but is neither a regular file nor a directory" << std::endl;
 			}
 		}
 		else{
-			std::cout << p << " does not exist\n";
+			std::cout << p << " does not exist" << std::endl;
 		}
 	}	
 	catch (const boost::filesystem::filesystem_error& ex){ //Error handling!
